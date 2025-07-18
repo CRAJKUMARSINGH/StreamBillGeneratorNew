@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Extra Items</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10mm;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .number {
+            text-align: right;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Extra Items</h2>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th width="15mm">Serial No.</th>
+                    <th width="80mm">Description</th>
+                    <th width="15mm">Unit</th>
+                    <th width="20mm">Quantity</th>
+                    <th width="20mm">Rate</th>
+                    <th width="25mm">Amount</th>
+                    <th width="25mm">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data.extra_items %}
+                <tr>
+                    <td>{{ item.serial_no }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td class="number">{{ "%.2f" | format(item.quantity) if item.quantity else "" }}</td>
+                    <td class="number">{{ "%.2f" | format(item.rate) if item.rate else "" }}</td>
+                    <td class="number">{{ "%.2f" | format(item.amount) if item.amount else "" }}</td>
+                    <td>{{ item.remark }}</td>
+                </tr>
+                {% endfor %}
+                {% if not data.extra_items %}
+                <tr>
+                    <td colspan="7" style="text-align: center; font-style: italic;">No extra items</td>
+                </tr>
+                {% endif %}
+                
+                <!-- Total rows -->
+                <tr style="border-top: 2px solid black;">
+                    <td colspan="5" style="text-align: right; font-weight: bold;">Total Rs.</td>
+                    <td class="number" style="font-weight: bold;">{{ data.extra_items_base | round(2) }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: bold;">Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</td>
+                    <td class="number" style="font-weight: bold;">{{ data.extra_premium | round(2) }}</td>
+                    <td></td>
+                </tr>
+                
+                <tr style="border-top: 2px solid black;">
+                    <td colspan="5" style="text-align: right; font-weight: bold; background-color: #f0f0f0;">Sum of Extra Items (with Premium) Rs.</td>
+                    <td class="number" style="font-weight: bold; background-color: #f0f0f0;">{{ data.extra_items_sum | round(2) }}</td>
+                    <td style="background-color: #f0f0f0;"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

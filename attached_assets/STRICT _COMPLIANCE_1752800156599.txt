@@ -1,0 +1,35 @@
+Requirement:
+
+    Scan the entire app code, especially in app.py and any report-generation scripts.
+
+    Locate any incorrect usage of self outside of class methods or in improperly structured functions.
+
+    Wherever self is used:
+
+        If inside a class, confirm it’s correctly defined via __init__ and method structure.
+
+        If in a standalone function or global scope, remove or replace self. references by:
+
+            Passing required variables explicitly as function parameters, or
+
+            Refactoring the function into a class method if appropriate.
+
+Deliverable:
+
+    Correct the faulty code.
+
+    Ensure:
+
+        No use of self outside class methods.
+
+        Report generation and file handling functions work without error.
+
+        The app runs successfully upon Excel file upload and processes files to generate outputs.
+
+Constraint:
+
+    Do not alter the app’s UI layout or file upload method.
+
+    Keep the structure suitable for clerical-level end users.
+
+>>>>my code is habitual to uploading 10 files as input simultaneously.... please note to maintain this capability >>>plus balloon and wish theme

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Final Bill Scrutiny Sheet</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+            margin: 0;
+            padding: 0;
+            line-height: 1.0;
+        }
+        .container {
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 12pt;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 9pt;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+            vertical-align: top;
+            overflow: hidden;
+        }
+        .note-cell {
+            white-space: pre-wrap;
+            line-height: 1.0;
+            padding: 5px;
+        }
+        .specific-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .specific-table th:nth-child(1), .specific-table td:nth-child(1) {
+            width: 10mm;
+        }
+        .specific-table th:nth-child(2), .specific-table td:nth-child(2) {
+            width: 80mm;
+        }
+        .specific-table th:nth-child(3), .specific-table td:nth-child(3) {
+            width: 90mm;
+        }
+        .signature-section {
+            text-align: right;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>FINAL BILL SCRUTINY SHEET</h2>
+        <p style="text-align: center;">First & Final Bill Agreement No. {{ data.agreement_no }}</p>
+
+        <table class="specific-table">
+            <tbody>
+                <tr><td>1</td><td>Chargeable Head</td><td>8443-00-108-00-00</td></tr>
+                <tr><td>2</td><td>Agreement No.</td><td>{{ data.agreement_no }}</td></tr>
+                <tr><td>3</td><td>Adm. Section</td><td>Udaipur Electrical Division</td></tr>
+                <tr><td>4</td><td>Tech. Section</td><td>Ambamata Sub-Division</td></tr>
+                <tr><td>5</td><td>M.B No.</td><td>{{ data.measurement_book_no }}/Pg. No. {{ data.measurement_book_page }}</td></tr>
+                <tr><td>6</td><td>Name of Sub Dn</td><td>Ambamata Sub-Division</td></tr>
+                <tr><td>7</td><td>Name of Work</td><td>{{ data.name_of_work }}</td></tr>
+                <tr><td>8</td><td>Name of Firm</td><td>{{ data.name_of_firm }}</td></tr>
+                <tr><td>9</td><td>Original/Deposit</td><td>Deposit</td></tr>
+                <tr><td>11</td><td>Date of Commencement</td><td>{{ data.date_commencement }}</td></tr>
+                <tr><td>12</td><td>Date of Completion</td><td>{{ data.date_completion }}</td></tr>
+                <tr><td>13</td><td>Actual Date of Completion</td><td>{{ data.actual_completion or data.date_completion }}</td></tr>
+                <tr><td>14</td><td>In case of delay weather, Provisional Extension Granted</td><td>Work completed within stipulated time</td></tr>
+                <tr><td>15</td><td>Whether any notice issued</td><td>No</td></tr>
+                <tr><td>16</td><td>Amount of Work Order Rs.</td><td>{{ data.work_order_amount | round(0) | int }}</td></tr>
+                <tr><td>17</td><td>Actual Expenditure up to this Bill Rs.</td><td>{{ data.totals.grand_total | round(0) | int }}</td></tr>
+                <tr><td>18</td><td>Balance to be done Rs.</td><td>NIL</td></tr>
+                <tr><td></td><td>Net Amount of This Bill Rs.</td><td>{{ data.totals.grand_total | round(0) | int }}</td></tr>
+                <tr><td>19</td><td>Prorata Progress on the Work maintained by the Firm</td><td>Till date 100% Work is executed</td></tr>
+                <tr><td>20</td><td>Date on Which record Measurement taken by JEN AC</td><td>{{ data.measurement_date }}</td></tr>
+                <tr><td>21</td><td>Date of Checking and % on the Checked By AEN</td><td>100% checked</td></tr>
+                <tr><td>22</td><td>No. Of selection item checked by the EE</td><td>All items checked</td></tr>
+                <tr><td>23</td><td>Other Inputs</td><td></td></tr>
+                <tr><td></td><td>(A) Is It a Repair / Maintenance Work</td><td>No</td></tr>
+                <tr><td></td><td>(B) Extra Item</td><td>{% if data.extra_items_sum > 0 %}Yes{% else %}No{% endif %}</td></tr>
+                <tr><td></td><td>Amount of Extra Items Rs.</td><td>{{ data.extra_items_sum | round(0) | int if data.extra_items_sum > 0 else '' }}</td></tr>
+                <tr><td></td><td>(C) Any Excess Item Executed?</td><td>No</td></tr>
+                <tr><td></td><td>(D) Any Inadvertent Delay in Bill Submission?</td><td>No</td></tr>
+                <tr><td></td><td>Deductions:-</td><td></td></tr>
+                <tr><td></td><td>S.D.II</td><td>{{ data.totals.sd_amount | round(0) | int }}</td></tr>
+                <tr><td></td><td>I.T.</td><td>{{ data.totals.it_amount | round(0) | int }}</td></tr>
+                <tr><td></td><td>GST</td><td>{{ data.totals.gst_amount | round(0) | int }}</td></tr>
+                <tr><td></td><td>L.C.</td><td>{{ data.totals.lc_amount | round(0) | int }}</td></tr>
+                <tr><td></td><td>Liquidated Damages (Recovery)</td><td>NIL</td></tr>
+                <tr><td></td><td>Cheque</td><td>{{ data.totals.net_payable | round(0) | int }}</td></tr>
+                <tr><td></td><td>Total</td><td>{{ data.totals.grand_total | round(0) | int }}</td></tr>
+                <tr><td colspan="3" class="note-cell">
+                    <strong>Notes:</strong>
+                    {% for note in data.notes %}
+{{ loop.index }}. {{ note }}
+                    {% endfor %}
+                </td></tr>
+            </tbody>
+        </table>
+
+        <div class="signature-section">
+            <p>{{ data.officer_name }}</p>
+            <p>{{ data.officer_designation }}</p>
+        </div>
+    </div>
+</body>
+</html>

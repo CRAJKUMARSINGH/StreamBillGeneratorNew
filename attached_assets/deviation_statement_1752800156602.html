@@ -1,0 +1,139 @@
+<html>
+<head>
+    <title>Deviation Statement</title>
+</head>
+<body>
+    <h1>DEVIATION STATEMENT</h1>
+
+    {% if data.header %}
+        {% for row in data.header %}
+            {% if row|length > 0 %}
+                <p>
+                    {% for item in row %}
+                        {% if item|trim %}
+                            {% set trimmed = item|trim %}
+                            {% if trimmed|length >= 10 and trimmed[4:5] == '-' and trimmed[7:8] == '-' and trimmed[:4]|int > 0 and trimmed[5:7]|int > 0 and trimmed[8:10]|int > 0 %}
+                                {{ trimmed[8:10] }}/{{ trimmed[5:7] }}/{{ trimmed[:4] }}
+                            {% else %}
+                                {{ trimmed }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Agreement No: {{ data.agreement_no }}</p>
+        <p>Name of Work: {{ data.name_of_work }}</p>
+        <p>Name of Firm: {{ data.name_of_firm }}</p>
+        <p>Date of Commencement: {{ data.date_commencement }}</p>
+        <p>Schedule Date of Completion: {{ data.date_completion }}</p>
+        <p>Actual Date of Completion: {{ data.actual_completion }}</p>
+    {% endif %}
+
+    <table border="1">
+        <tr>
+            <th>Item No.</th>
+            <th>Item of Work</th>
+            <th>Unit</th>
+            <th>Qty as per Work Order</th>
+            <th>Rate</th>
+            <th>Amount as per Work Order</th>
+            <th>Qty as Executed</th>
+            <th>Amount as Executed</th>
+            <th>Excess Qty</th>
+            <th>Excess Amount</th>
+            <th>Saving Qty</th>
+            <th>Saving Amount</th>
+            <th>Remark</th>
+        </tr>
+        {% for item in data.deviation_items %}
+        <tr>
+            <td>{{ item.serial_no }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.unit }}</td>
+            <td>{{ "%.2f" | format(item.qty_wo) if item.qty_wo else "" }}</td>
+            <td>{{ "%.2f" | format(item.rate) if item.rate else "" }}</td>
+            <td>{{ "%.2f" | format(item.amt_wo) if item.amt_wo else "" }}</td>
+            <td>{{ "%.2f" | format(item.qty_bill) if item.qty_bill else "" }}</td>
+            <td>{{ "%.2f" | format(item.amt_bill) if item.amt_bill else "" }}</td>
+            <td>{{ "%.2f" | format(item.excess_qty) if item.excess_qty else "" }}</td>
+            <td>{{ "%.2f" | format(item.excess_amt) if item.excess_amt else "" }}</td>
+            <td>{{ "%.2f" | format(item.saving_qty) if item.saving_qty else "" }}</td>
+            <td>{{ "%.2f" | format(item.saving_amt) if item.saving_amt else "" }}</td>
+            <td>{{ item.remark }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="9"><strong>Summary</strong></td>
+        </tr>
+        <tr>
+            <td colspan="5"><strong>Total Work Order Amount</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.work_order_total) }}</td>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td colspan="5"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.tender_premium_f) }}</td>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td colspan="5"><strong>Grand Total Work Order</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.grand_total_f) }}</td>
+            <td colspan="7"></td>
+        </tr>
+        <tr>
+            <td colspan="7"><strong>Total Executed Amount</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.executed_total) }}</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="7"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.tender_premium_h) }}</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="7"><strong>Grand Total Executed</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.grand_total_h) }}</td>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td colspan="9"><strong>Excess</strong></td>
+        </tr>
+        <tr>
+            <td colspan="9"><strong>Total Excess Amount</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.overall_excess) }}</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td colspan="9"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.tender_premium_j) }}</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td colspan="9"><strong>Grand Total Excess</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.grand_total_j) }}</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td colspan="11"><strong>Saving</strong></td>
+        </tr>
+        <tr>
+            <td colspan="11"><strong>Total Saving Amount</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.overall_saving) }}</td>
+        </tr>
+        <tr>
+            <td colspan="11"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.tender_premium_l) }}</td>
+        </tr>
+        <tr>
+            <td colspan="11"><strong>Grand Total Saving</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.grand_total_l) }}</td>
+        </tr>
+        <tr>
+            <td colspan="11"><strong>Net Difference</strong></td>
+            <td>{{ "%.2f" | format(data.deviation_summary.net_difference) }}</td>
+        </tr>
+    </table>
+</body>
+</html>

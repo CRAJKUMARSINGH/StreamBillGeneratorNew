@@ -1,0 +1,85 @@
+### 1. Overall Requirements of the App
+
+The app is a Python-based Streamlit application that processes Excel (`.xlsx`) input files to generate reports in PDF, DOCX, and HTML formats, adhering to specific templates (`refer1_first_page.html` and `refer1_deviation_statement.html`). Below is a consolidated summary of the app’s requirements:
+
+#### Core Functionality
+- **Input**: A single Excel file with sheets: `Title`, `Work Order`, `Bill Quantity`, and optionally `Extra Items`.
+- **Processing**:
+  - Extract data from the `Title` sheet to replace manual sidebar inputs.
+  - Process `Work Order`, `Bill Quantity`, and `Extra Items` sheets to generate reports.
+  - Handle non-zero quantity items, sub-items, and sub-sub-items, regardless of blank serial numbers.
+  - Apply specific rounding rules:
+    - **First Page & Deviation Statement**: 2 decimal places for quantities, rates, and amounts.
+    - **Other Sections**: Round rates and amounts to the nearest whole number.
+    - **GST Deduction**: Round up to the next even number.
+    - **Note Sheet**: Round all figures to whole numbers, use single-line spacing.
+- **Output**:
+  - Generate individual reports (PDF, DOCX, HTML) for each test file.
+  - Create a combined PDF with reports in the correct order.
+  - Package all outputs into a `.zip` file per test file.
+  - Final deliverable: A `.zip` containing app code, templates, assets, and all output archives.
+- **Document Formatting**:
+  - A4 page size, 10mm margins (all sides).
+  - Portrait orientation, except for Deviation Statement (landscape).
+  - Date format: `dd/mm/yyyy` (no timestamps).
+  - Use exact column widths from templates (or equivalent ratios):
+    - **First Page Summary**:
+      ```html
+      <th width="11.7mm">Unit</th>
+      <th width="16mm">Quantity executed (or supplied) since last certificate</th>
+      <th width="16mm">Quantity executed (or supplied) upto date as per MB</th>
+      <th width="11.1mm">Item No.</th>
+      <th width="74.2mm">Item of Work supplies (Grouped under "sub-head" and "sub work" of estimate)</th>
+      <th width="15.3mm">Rate</th>
+      <th width="22.7mm">Amount upto date</th>
+      <th width="17.6mm">Amount Since previous bill (Total for each sub-head)</th>
+      <th width="13.9mm">Remark</th>
+      ```
+    - **Deviation Statement**:
+      ```html
+      <th width="6mm">ITEM No.</th>
+      <th width="95mm">Description</th>
+      <th width="10mm">Unit</th>
+      <th width="10mm">Qty as per Work Order</th>
+      <th width="12mm">Rate</th>
+      <th width="12mm">Amt as per Work Order Rs.</th>
+      <th width="12mm">Qty Executed</th>
+      <th width="12mm">Amt as per Executed Rs.</th>
+      <th width="12mm">Excess Qty</th>
+      <th width="12mm">Excess Amt Rs.</th>
+      <th width="12mm">Saving Qty</th>
+      <th width="12mm">Saving Amt Rs.</th>
+      <th width="40mm">REMARKS/ REASON.</th>
+      ```
+
+#### UI and Appearance
+- Retain the exact UI appearance from `https://github.com/CRAJKUMARSINGH/SharedFileProcessor`.
+- Add to the logo: “An Initiative by Mrs. Premlata Jain, Additional Administrative Officer, PWD, Udaipur”.
+- No manual inputs except file upload; process files automatically.
+
+#### Project Structure
+- **Directories**:
+  - `src`: Contains app source code (e.g., `app.py`).
+  - `tests`: For test scripts (to be created).
+  - `Input_Files_for_tests`: Contains test Excel files.
+- **Cleanup**:
+  - Remove redundant, legacy, or unused files.
+  - Keep only working code, valid templates, and required assets (CSS, JS, icons).
+- **Dependencies**:
+  - Generate a clean `requirements.txt` for Windows compatibility.
+  - Include `pytest`, `pytest-cov`, `pytest-mock`, `openpyxl` (latest stable versions as of July 15, 2025).
+  - Exclude unused packages (e.g., `pandas`, `pyyaml`).
+
+#### Windows 11 Compatibility
+- Ensure the app runs on a Windows 11 PC with a single `.bat` file that:
+  - Closes prior Command Prompt, PowerShell, and browser (Firefox) sessions.
+  - Installs dependencies and runs the app.
+
+#### Testing
+- Test with four Excel files in `Input_Files_for_tests`.
+- Validate:
+  - Correct detection and processing of sheets.
+  - Accurate calculations and data aggregation.
+  - Proper output generation (PDF, DOCX, HTML, combined PDF, `.zip`).
+  - Robust error handling for corrupt/unsupported files, empty sheets, or missing columns.
+- Ensure performance with large files and UI consistency.

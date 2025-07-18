@@ -1,0 +1,192 @@
+/* Custom CSS for Bill Generator App */
+
+.header-container {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.main-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.1em;
+    margin: 10px 0;
+    font-style: italic;
+}
+
+.balloon-container {
+    margin: 15px 0;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.balloon {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 2em;
+    animation: float 3s ease-in-out infinite;
+}
+
+.balloon1 {
+    animation-delay: 0s;
+}
+
+.balloon2 {
+    animation-delay: 0.5s;
+}
+
+.balloon3 {
+    animation-delay: 1s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.wishes-message {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 15px auto;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+}
+
+.wishes-message p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Success and error message styling */
+.stAlert > div {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* File uploader styling */
+.stFileUploader > div {
+    border: 2px dashed #4CAF50;
+    border-radius: 10px;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+/* Button styling */
+.stButton > button {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Progress bar styling */
+.stProgress > div > div {
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    border-radius: 10px;
+}
+
+/* Expander styling */
+.streamlit-expanderHeader {
+    background: #f0f2f6;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Download button styling */
+.stDownloadButton > button {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.stDownloadButton > button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+/* Info box styling */
+.stInfo {
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+    border-left: 4px solid #2196F3;
+    border-radius: 5px;
+}
+
+/* Metric styling */
+.metric-container {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    background: linear-gradient(180deg, #f8f9fa, #e9ecef);
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2em;
+    }
+    
+    .balloon {
+        font-size: 1.5em;
+        margin: 0 5px;
+    }
+    
+    .wishes-message p {
+        font-size: 1em;
+    }
+}

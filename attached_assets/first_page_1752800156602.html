@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>Contractor Bill</title>
+</head>
+<body>
+    <h1>CONTRACTOR BILL</h1>
+
+    {% if data.header %}
+        {% for row in data.header %}
+            {% if row|length > 0 %}
+                <p>
+                    {% for item in row %}
+                        {% if item|trim %}
+                            {% set trimmed = item|trim %}
+                            {% if trimmed|length >= 10 and trimmed[4:5] == '-' and trimmed[7:8] == '-' and trimmed[:4]|int > 0 and trimmed[5:7]|int > 0 and trimmed[8:10]|int > 0 %}
+                                {{ trimmed[8:10] }}/{{ trimmed[5:7] }}/{{ trimmed[:4] }}
+                            {% else %}
+                                {{ trimmed }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Agreement No: {{ data.agreement_no }}</p>
+        <p>Name of Work: {{ data.name_of_work }}</p>
+        <p>Name of Firm: {{ data.name_of_firm }}</p>
+        <p>Date of Commencement: {{ data.date_commencement }}</p>
+        <p>Schedule Date of Completion: {{ data.date_completion }}</p>
+        <p>Actual Date of Completion: {{ data.actual_completion }}</p>
+    {% endif %}
+
+    <table border="1">
+        <tr>
+            <th>Unit</th>
+            <th>Quantity executed (or supplied) since last certificate</th>
+            <th>Quantity executed (or supplied) up to date as per MB</th>
+            <th>Item No.</th>
+            <th>Item of Work supplies (Grouped under "sub-head" and "sub work" of estimate)</th>
+            <th>Rate</th>
+            <th>Amount up to date</th>
+            <th>Amount Since previous bill (Total for each sub-head)</th>
+            <th>Remark</th>
+        </tr>
+        {% for item in data.bill_items %}
+        <tr>
+            <td>{{ item.unit }}</td>
+            <td>{{ "%.2f" | format(item.quantity_bill) if item.quantity_bill else "" }}</td>
+            <td>{{ "%.2f" | format(item.quantity_bill) if item.quantity_bill else "" }}</td>
+            <td>{{ item.serial_no }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ "%.2f" | format(item.rate) if item.rate else "" }}</td>
+            <td>{{ "%.2f" | format(item.amount_bill) if item.amount_bill else "" }}</td>
+            <td>{{ "%.2f" | format(item.amount_bill) if item.amount_bill else "" }}</td>
+            <td>{{ item.remark }}</td>
+        </tr>
+        {% endfor %}
+        {% if data.extra_items %}
+        <tr>
+            <td colspan="9"><strong>Extra Items</strong></td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <p>Agreement No: {{ data.agreement_no }}</p>
+                <p>Name of Work: {{ data.name_of_work }}</p>
+                <p>Name of Firm: {{ data.name_of_firm }}</p>
+                <p>Date of Commencement: {{ data.date_commencement }}</p>
+                <p>Schedule Date of Completion: {{ data.date_completion }}</p>
+                <p>Actual Date of Completion: {{ data.actual_completion }}</p>
+            </td>
+        </tr>
+        {% for item in data.extra_items %}
+        <tr>
+            <td>{{ item.unit }}</td>
+            <td>{{ "%.2f" | format(item.quantity) if item.quantity else "" }}</td>
+            <td>{{ "%.2f" | format(item.quantity) if item.quantity else "" }}</td>
+            <td>{{ item.serial_no }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ "%.2f" | format(item.rate) if item.rate else "" }}</td>
+            <td>{{ "%.2f" | format(item.amount) if item.amount else "" }}</td>
+            <td>{{ "%.2f" | format(item.amount) if item.amount else "" }}</td>
+            <td>{{ item.remark }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="6"><strong>Extra Items Total Rs.</strong></td>
+            <td>{{ "%.2f" | format(data.extra_items_base) if data.extra_items_base > 0 else 'NIL' }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="6"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.extra_premium) if data.extra_premium > 0 else 'NIL' }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="6"><strong>Extra Items Grand Total (including Tender Premium) Rs.</strong></td>
+            <td>{{ "%.2f" | format(data.extra_items_sum) if data.extra_items_sum > 0 else 'NIL' }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="6"><strong>Main Items Grand Total Rs.</strong></td>
+            <td>{{ "%.2f" | format(data.bill_total) }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="6"><strong>Tender Premium @ {{ "%.2f%%" | format(data.tender_premium_percent * 100) }}</strong></td>
+            <td>{{ "%.2f" | format(data.bill_premium) }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td colspan="6"><strong>Total Payable Amount Rs.</strong></td>
+            <td>{{ "%.2f" | format(data.bill_grand_total + data.extra_items_sum) }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>

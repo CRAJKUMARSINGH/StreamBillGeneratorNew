@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Extra Items</title>
+    <style>
+        body { font-family: Calibri, sans-serif; font-size: 9pt; margin: 0; }
+        .container { width: 190mm; min-height: 287mm; margin: 10mm auto; padding: 10mm; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 5px; text-align: left; }
+        .header { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Extra Items</h2>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial No.</th>
+                    <th>Remark</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data.extra_items %}
+                    <tr>
+                        <td>{{ item.serial_no }}</td>
+                        <td>{{ item.remark }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.quantity | round(0) | int if item.quantity else "" }}</td>
+                        <td>{{ item.unit }}</td>
+                        <td>{{ item.rate | round(0) | int if item.rate else "" }}</td>
+                        <td>{{ item.amount | round(0) | int if item.amount else "" }}</td>
+                    </tr>
+                {% endfor %}
+                {% if not data.extra_items %}
+                    <tr>
+                        <td colspan="7" style="text-align: center; font-style: italic;">No extra items</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
